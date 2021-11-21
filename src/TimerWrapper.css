@@ -1,0 +1,20 @@
+.TimerWrapper {
+    height: 120px;
+    width: 155px;
+}
+
+.TimerWrapper-icons {
+    text-align: right;
+}
+
+.TimerWrapper-icon {
+    display: inline-block;
+    color: darkgrey;
+    font-size: 20px;
+    margin: 15px 3px 0px 3px;
+}
+
+.TimerWrapper-icon-large {
+    color: darkgrey;
+    font-size: 40px;
+}

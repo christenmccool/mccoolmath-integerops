@@ -1,0 +1,37 @@
+.Scoreboard {
+    min-width: 155px;
+    height: 80px;
+    margin: 0px auto;
+    padding: 0px;
+    border: 1px dotted grey;
+    /* border: 1px solid #e8630a; */
+    border-radius: 5px;
+    /* background-color: #F1F1F1; */
+}
+
+.Scoreboard p {
+    font-size: 25px;
+    margin: 6px;
+    color: #2c5d63;
+
+}
+
+@media (min-width: 1024px) {
+    .Scoreboard {
+        width: 80%;
+        height: auto;
+        display: flex;
+        justify-content: space-evenly;
+        /* background: none; */
+        border: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    .Scoreboard p {
+        font-size: 30px;
+        margin: 0px;
+    }
+}
+
+

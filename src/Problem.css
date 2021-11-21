@@ -1,17 +1,18 @@
 .Problem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    width: 50%;
-    margin: 40px auto;
-    padding: 40px 10px;
+    text-align: center;
+    width: 60%;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 0px auto;
+    padding: 40px 10px 5px 10px;
     background-color:white;
-    border-radius: 10px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px darkgrey;
 }
 
 .Problem-exp {
     font-size: 50px;
+    margin: 0px 0px 10px 0px;
 }
 
 .Problem-answer {
@@ -29,18 +30,60 @@
     display: block;
     margin: 10px auto;
     padding: 5px 10px;
-    border-radius: 3px;
+    font-size: 30px;
 }
 
-.Problem button:hover {
+.Problem button:hover:enabled, .Problem button:focus {
     cursor: pointer;
+    box-shadow: 0 0 0 3px lightgrey;
 }
 
 .Problem-check-btn {
-    background-color: darkgrey;
+    background-color: #2c5d63;
+    /* background-color: #37747c; */
+    color: white;
+    border: 3px solid #2c5d63;
+    border-radius: 8px;
+}
+
+.Problem-new-btn-div {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .Problem-new-btn {
     background-color: white;
     border: 1px solid darkgrey;
+    border-radius: 5px;
+}
+
+
+.Problem-check-btn:disabled {
+    font-weight: normal;
+    color: white;
+    background-color: lightgrey;
+    border: 3px solid white;
+}
+
+
+.Problem-status {
+  min-height: 125px;
+  margin: 20px 0px 0px 0px;
+}
+
+.Problem-status h1 {
+    margin: 0px;
+    padding: 0px;
+    font-size: 50px;
+  }
+
+.Problem-prev-attempts {
+    min-height: 30px;
+    padding: 0px;
+  }
+  
+.Problem-prev-attempts p {
+    margin: 0px;
+    font-size: 20px;
 }

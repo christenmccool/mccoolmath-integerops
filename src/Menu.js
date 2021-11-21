@@ -1,30 +1,32 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './Menu.css';
 
 const Menu = () => {
     return (
-        <nav className="Menu">
-            <NavLink exact to="/integerop/add" className="Menu-link">
-                Adding Integers
-            </NavLink>
+        <div className="Menu">
+          <nav className="Menu-nav">
+              <Link exact to="/integerop/add" className="Menu-link">
+                  Adding Integers
+              </Link>
 
-            <NavLink exact to="/integerop/sub" className="Menu-link">
-                Subtracting Integers
-            </NavLink>
+              <Link exact to="/integerop/sub" className="Menu-link">
+                  Subtracting Integers
+              </Link>
 
-            <NavLink exact to="/integerop/mult" className="Menu-link">
-                Multiplying Integers
-            </NavLink>
+              <Link exact to="/integerop/mult" className="Menu-link">
+                  Multiplying Integers
+              </Link>
 
-            <NavLink exact to="/integerop/div" className="Menu-link">
-                Dividing Integers
-            </NavLink>
+              <Link exact to="/integerop/div" className="Menu-link">
+                  Dividing Integers
+              </Link>
 
-            <NavLink exact to="/integerop" className="Menu-link Menu-link-mixed">
-                Mixed Practice
-            </NavLink>
-        </nav>
+              <Link exact to="/integerop" className="Menu-link Menu-link-mixed">
+                  Mixed Practice
+              </Link>
+          </nav>
+        </div>
     )
 }
 

@@ -1,0 +1,57 @@
+.Timer {
+    position: relative;
+    text-align: center;
+}
+
+.Timer-main {
+    text-align: center;
+    width: 155px;
+    background-color: white;
+    border-radius: 4px;
+}
+
+
+.Timer-fivesec {
+    width: 50px;
+    position: absolute;
+    bottom: -50px;
+    left: 30px;
+    font-size: 40px;
+    color: #e8630a;
+    /* color: #2c5d63; */
+}
+
+@media (min-width: 1024px) {
+    .Timer-fivesec {
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.Timer-display {
+    height: 50px;
+}
+
+.Timer-display h1 {
+    margin: 0px;
+    font-size: 40px;
+}
+
+.Timer-buttons {
+    height: 30px;
+    text-align: center;
+}
+
+.Timer-start-btn, .Timer-reset-btn {
+    cursor: pointer;
+    display: inline-block;
+    background-color: darkgrey;
+    color: white;
+    margin: 0px 2px;
+    padding: 2px 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+

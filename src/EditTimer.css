@@ -1,0 +1,29 @@
+.EditTimer {
+    text-align: center;
+    width: 155px;
+    /* height: 80px; */
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.EditTimer-select select {
+    margin: 7px 0px 3px 0px;
+    font-size: 30px;
+}
+
+.EditTimer h1 {
+    margin: 0px;
+    font-size: 40px;
+}
+
+.EditTimer-icons {
+    text-align: right;
+}
+
+.EditTimer-icon {
+    display: inline-block;
+    color: darkgrey;
+    font-size: 20px;
+    margin: 8px 5px 2px 0px;
+}

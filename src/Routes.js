@@ -1,6 +1,8 @@
 import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import Problem from './Problem';
+import ProblemPage from './ProblemPage';
+
 import Menu from './Menu'
 
 const Routes = () => {
@@ -13,16 +15,16 @@ const Routes = () => {
                 <Problem />
             </Route>
             <Route exact path="/integerop/add">
-                <Problem op="add" />
+                <ProblemPage op="add" />
             </Route>
             <Route exact path="/integerop/sub">
-                <Problem op="sub" />
+                <ProblemPage op="sub" />
             </Route>
             <Route exact path="/integerop/mult">
-                <Problem op="mult" />
+                <ProblemPage op="mult" />
             </Route>
             <Route exact path="/integerop/div">
-                <Problem op="div" />
+                <ProblemPage op="div" />
             </Route>
             <Redirect to="/" />
         </Switch>

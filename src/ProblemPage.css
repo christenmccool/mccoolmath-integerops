@@ -1,0 +1,45 @@
+.ProblemPage {
+    text-align: center;
+    position: relative;
+}
+
+.ProblemPage-main {
+    margin: 20px 0px;
+}
+
+@media (min-width: 1024px) {
+    .ProblemPage-timer {
+        position: absolute;
+        bottom: 50px;
+        left: 85%;
+
+    }
+}
+
+.ProblemPage-info {
+    width: 60%;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.ProblemPage-statistics {
+    width: 50%;
+}
+
+@media (min-width: 1024px) {
+    .ProblemPage-statistics {
+        width: 100%;
+        margin: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ProblemPage-main {
+        margin: 20px 0px 0px 0px;
+    }
+}

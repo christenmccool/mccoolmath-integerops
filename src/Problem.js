@@ -1,9 +1,12 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
+import ScoreContext from './ScoreContext';
 import axios from 'axios';
 import { addStyles, StaticMathField, EditableMathField } from 'react-mathquill';
-import {NavLink} from 'react-router-dom';
+import correctSound from './correct-6033.mp3';
 
 import './Problem.css';
+
+import ConfettiExplosion from '@reonomy/react-confetti-explosion';
 
 
 const Problem = ({op}) => {
@@ -11,9 +14,11 @@ const Problem = ({op}) => {
     const [prob, setProb] = useState(null);
     const [answer, setAnswer] = useState("");
     const [status, setStatus] = useState(null);
+    const [prevAttempts, setPrevAttempts] = useState([]);
+    const [isExploding, setIsExploding] = React.useState(false);
     const answerField = useRef();
     const newProbBtn = useRef();
-
+    const {scores, setScores} = useContext(ScoreContext);
 
     const [error, setError] = useState(null);
     addStyles();
@@ -26,8 +31,6 @@ const Problem = ({op}) => {
                 const response = await axios.get(path);
                 setExp(response.data.exp);
                 setProb(response.data);
-                setStatus(null);
-                setAnswer("");
             } catch(err) {
                 setError(error => err);
             }
@@ -39,7 +42,23 @@ const Problem = ({op}) => {
         answerField.current.children[0].children[0].children[0].focus();
         if (status==='correct') {
             newProbBtn.current.focus();
-        }
+
+            let newScores = {...scores};
+            newScores[op]["correct"] = newScores[op]["correct"] + 1;
+            newScores[op]["attempted"] = newScores[op]["attempted"] + 1;
+            setScores(newScores);
+        } 
+        if (status==='incorrect') {
+            setTimeout(() => {
+                setStatus(null);
+                setAnswer("");
+            }, 1000);
+
+            let newScores = {...scores};            
+            newScores[op]["incorrect"] = newScores[op]["incorrect"] + 1;
+            newScores[op]["attempted"] = newScores[op]["attempted"] + 1;
+            setScores(newScores);
+        } 
     }, [status]);
     
 
@@ -49,6 +68,7 @@ const Problem = ({op}) => {
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
+        if (answer === "") return;
         const response = await axios.post(`http://localhost:3000/integerop/`, 
                                             {   
                                                 probType: prob.problemType,
@@ -57,24 +77,78 @@ const Problem = ({op}) => {
                                             } );
 
         setStatus(response.data.status);
+        if (response.data.status === 'correct') {
+            setIsExploding(true);
+        }
+        if (response.data.status ==='incorrect') {
+            setTimeout(() => {
+                setPrevAttempts(prevAttempts => [...prevAttempts, answer]);
+            }, 1200)
+        }
+    }
+
+    const handleNewProblem = () => {
+        if (status === null) {
+            let newScores = {...scores};            
+            newScores[op]["attempted"] = newScores[op]["attempted"] + 1;
+            setScores(newScores);
+        }
+
+        setExp(null);
+        setStatus(null);
+        setAnswer("");
+        setPrevAttempts([]);
     }
 
     const renderStatus = () => {
         if (status) {
-            if (status==="correct") return <h2>Correct!</h2>;
-            if (status==="incorrect") return <h2>Try again!</h2>;
+            if (status==="correct") {
+                return (
+                    <>
+                        <audio autoPlay>
+                            <source src={correctSound} type="audio/mp3" />
+                        </audio> 
+                        <h1>Correct!</h1>
+                        {isExploding && <ConfettiExplosion  />}
+                    </>
+                )
+            } else {
+                return (
+                    <>
+                        <h1>Try again!</h1>
+                    </>
+                )
+            }
         }
         return null;
     }
 
-    const handleKeyDown = (evt): void => {
+    const renderPrevAttempts = () => {
+        if (prevAttempts.length) {
+            return (
+                <p>Previous attempts:
+                    {prevAttempts.map((att,i) => {
+                        if (i === 0) return (<span>{`  ${att}`}</span>)
+                        return (<span>{`,  ${att}`}</span>)
+                    })
+                    }
+                </p>
+            )
+        }
+        return null;
+    }
+
+
+    // const handleKeyDown = (evt): void => {
+    const handleKeyDown = (evt) => {
         if (evt.key === 'Enter') {
             evt.preventDefault();
             evt.stopPropagation();
             handleSubmit(evt);
         }
       }
-  
+    
+
     return (
         <div className="Problem">
             <div className="Problem-exp">
@@ -92,12 +166,29 @@ const Problem = ({op}) => {
                         className="Problem-answer-field"
                     />
                 </div>
-                <button className="Problem-check-btn" type="submit">Check</button>
-            </form>
-            {renderStatus()}
-            <button className="Problem-new-btn" onClick={()=>setExp(null)} type="button" ref={newProbBtn}>New problem</button>
+                <div className="Problem-status">
+                    {status!=="correct" ? <button className="Problem-check-btn" type="submit">Check</button> : null}
+                    {renderStatus()}
+                </div>
+                <div className="Problem-prev-attempts">
+                    {renderPrevAttempts()}
+                </div>
         
-            <NavLink exact to="/">Home</NavLink>
+                {/* <button className="Problem-check-btn" type="submit" disabled={status==="correct"}>Check</button> */}
+            </form>
+            {/* <div className="Problem-status">
+                {renderStatus()}
+            </div>
+            <div className="Problem-prev-attempts">
+                {renderPrevAttempts()}
+            </div>
+         */}
+
+            <div className="Problem-new-btn-div">
+                <span>
+                    <button className="Problem-new-btn" onClick={handleNewProblem} type="button" ref={newProbBtn}>New problem</button>
+                </span>
+            </div>
         </div>
     )
 }
