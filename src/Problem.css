@@ -39,8 +39,7 @@
 }
 
 .Problem-check-btn {
-    background-color: #2c5d63;
-    /* background-color: #37747c; */
+    background-color: #2B7C85;
     color: white;
     border: 3px solid #2c5d63;
     border-radius: 8px;
@@ -49,7 +48,19 @@
 .Problem-new-btn-div {
     text-align: right;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+
+.Problem-icon {
+    display: inline-block;
+    font-size: 30px;
+    margin: 15px 3px 0px 3px;
+    color: #767676;
+}
+
+.Problem-icon-off {
+    color: lightgrey;
 }
 
 .Problem-new-btn {

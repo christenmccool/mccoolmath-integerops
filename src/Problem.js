@@ -2,11 +2,13 @@ import React, {useEffect, useState, useRef, useContext} from 'react';
 import ScoreContext from './ScoreContext';
 import axios from 'axios';
 import { addStyles, StaticMathField, EditableMathField } from 'react-mathquill';
-import correctSound from './correct-6033.mp3';
-
-import './Problem.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeUp, faStar } from '@fortawesome/free-solid-svg-icons';
 
 import ConfettiExplosion from '@reonomy/react-confetti-explosion';
+import correctSound from './correct-6033.mp3';
+import './Problem.css';
+
 
 
 const Problem = ({op}) => {
@@ -15,13 +17,19 @@ const Problem = ({op}) => {
     const [answer, setAnswer] = useState("");
     const [status, setStatus] = useState(null);
     const [prevAttempts, setPrevAttempts] = useState([]);
-    const [isExploding, setIsExploding] = React.useState(false);
+    const [ding, setDing] = useState(true);
+    const [fireworks, setFireworks] = useState(true);
+    const [isExploding, setIsExploding] = useState(false);
     const answerField = useRef();
     const newProbBtn = useRef();
+    const audioField = useRef();
     const {scores, setScores} = useContext(ScoreContext);
 
     const [error, setError] = useState(null);
     addStyles();
+
+    const iconVolclass = ding ? "Problem-icon" : "Problem-icon Problem-icon-off"
+    const iconStarclass = fireworks ? "Problem-icon" : "Problem-icon Problem-icon-off"
 
     useEffect(() => {
         if (exp) return;
@@ -60,11 +68,6 @@ const Problem = ({op}) => {
             setScores(newScores);
         } 
     }, [status]);
-    
-
-    // const handleChange = (mathField) => {
-    //     setAnswer(mathField.latex());
-    // }
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
@@ -78,9 +81,11 @@ const Problem = ({op}) => {
 
         setStatus(response.data.status);
         if (response.data.status === 'correct') {
-            setIsExploding(true);
+            if (fireworks) setIsExploding(true);
+            if (ding) audioField.current.play();
         }
         if (response.data.status ==='incorrect') {
+            setIsExploding(false);
             setTimeout(() => {
                 setPrevAttempts(prevAttempts => [...prevAttempts, answer]);
             }, 1200)
@@ -98,30 +103,28 @@ const Problem = ({op}) => {
         setStatus(null);
         setAnswer("");
         setPrevAttempts([]);
+        setIsExploding(false);
     }
 
-    const renderStatus = () => {
-        if (status) {
-            if (status==="correct") {
-                return (
-                    <>
-                        <audio autoPlay>
-                            <source src={correctSound} type="audio/mp3" />
-                        </audio> 
-                        <h1>Correct!</h1>
-                        {isExploding && <ConfettiExplosion  />}
-                    </>
-                )
-            } else {
-                return (
-                    <>
-                        <h1>Try again!</h1>
-                    </>
-                )
-            }
-        }
-        return null;
-    }
+    // const renderStatus = () => {
+    //     if (status) {
+    //         if (status==="correct") {
+    //             return (
+    //                 <>
+    //                     <h1>Correct!</h1>
+    //                     {fireworks && isExploding && <ConfettiExplosion  />}
+    //                 </>
+    //             )
+    //         } else {
+    //             return (
+    //                 <>
+    //                     <h1>Try again!</h1>
+    //                 </>
+    //             )
+    //         }
+    //     }
+    //     return null;
+    // }
 
     const renderPrevAttempts = () => {
         if (prevAttempts.length) {
@@ -138,8 +141,6 @@ const Problem = ({op}) => {
         return null;
     }
 
-
-    // const handleKeyDown = (evt): void => {
     const handleKeyDown = (evt) => {
         if (evt.key === 'Enter') {
             evt.preventDefault();
@@ -148,6 +149,17 @@ const Problem = ({op}) => {
         }
       }
     
+    const toggleDing = () => {
+        if (!ding) {
+            audioField.current.play();
+        }
+        setIsExploding(false);
+        setDing(!ding);
+    }
+
+    const toggleFireworks = () => {
+        setFireworks(!fireworks);
+    }
 
     return (
         <div className="Problem">
@@ -156,11 +168,11 @@ const Problem = ({op}) => {
                     {exp}
                 </StaticMathField>
             </div>
+            <audio ref={audioField} src={correctSound} type="audio/mp3" />
             <form className="Problem-answer" onSubmit={handleSubmit} >
                 <div ref={answerField}>
                     <EditableMathField
                         latex={answer}
-                        // onChange={handleChange}
                         onChange={(mathField) => setAnswer(mathField.latex())}
                         onKeyDown={handleKeyDown}
                         className="Problem-answer-field"
@@ -168,26 +180,27 @@ const Problem = ({op}) => {
                 </div>
                 <div className="Problem-status">
                     {status!=="correct" ? <button className="Problem-check-btn" type="submit">Check</button> : null}
-                    {renderStatus()}
+                    {/* {renderStatus()} */}
+                    <h1>{status==='correct' ? "Correct!" : status==='incorrect' ? "Try Again" : null}</h1>  
+                    {fireworks && isExploding && <ConfettiExplosion  />}              
                 </div>
                 <div className="Problem-prev-attempts">
                     {renderPrevAttempts()}
                 </div>
-        
-                {/* <button className="Problem-check-btn" type="submit" disabled={status==="correct"}>Check</button> */}
             </form>
-            {/* <div className="Problem-status">
-                {renderStatus()}
-            </div>
-            <div className="Problem-prev-attempts">
-                {renderPrevAttempts()}
-            </div>
-         */}
 
             <div className="Problem-new-btn-div">
-                <span>
+                <div className="Problem-icons">
+                    <div className={iconVolclass}>                    
+                        <FontAwesomeIcon icon={faVolumeUp} onClick={toggleDing} />
+                    </div>
+                    <div className={iconStarclass}>                    
+                        <FontAwesomeIcon icon={faStar} onClick={toggleFireworks}/>
+                    </div>
+                </div>
+                <div>
                     <button className="Problem-new-btn" onClick={handleNewProblem} type="button" ref={newProbBtn}>New problem</button>
-                </span>
+                </div>
             </div>
         </div>
     )

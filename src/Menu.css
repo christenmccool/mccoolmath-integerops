@@ -12,8 +12,15 @@
 
 .Menu-link {
     text-decoration: none;
-    background-color: #2c5d63;
-    /* background-color: #37747c; */
+    /* background-color: #2c5d63;
+    background-color: #7800A2;
+    background-color: #ADE292;
+    background-color: #A8E10C;
+    background-color: #2B7C85;
+    background-color: #37747c;
+    background-color: #91D34C; */
+    background-color: #2B7C85;
+
     color: white;
     padding: 10px;
     border-radius: 8px;
@@ -23,7 +30,14 @@
 }
 
 .Menu-link-mixed {
+    /* background-color: #7800A2;
+    background-color: #175873;
+    background-color: #2B7C85;
+    background-color: #175873; 
     background-color: #e8630a;
+    background-color: #4120A9;
+    background-color: #FF5765; */
+    background-color: #91D34C;
 } 
 
 
