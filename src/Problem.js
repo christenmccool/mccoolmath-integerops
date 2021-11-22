@@ -65,7 +65,7 @@ const Problem = ({op}) => {
         if (exp) return;
         const getData = async () => {
             try {
-                const path = op ? `http://localhost:3000/integerop/${op}` : `http://localhost:3000/integerop/`;
+                const path = op!=="mix" ? `http://localhost:3000/integerop/${op}` : `http://localhost:3000/integerop/`;
                 const response = await axios.get(path);
                 setExp(response.data.exp);
                 setProb(response.data);

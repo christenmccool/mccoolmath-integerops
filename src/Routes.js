@@ -12,7 +12,8 @@ const Routes = () => {
                 <Menu />
             </Route>
             <Route exact path="/integerop">
-                <Problem />
+                <ProblemPage op="mix" />
+                {/* <Problem /> */}
             </Route>
             <Route exact path="/integerop/add">
                 <ProblemPage op="add" />
