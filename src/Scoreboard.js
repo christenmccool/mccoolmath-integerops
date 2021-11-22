@@ -6,8 +6,6 @@ const Scoreboard = ({op}) => {
 
     const {scores, setScores} = useContext(ScoreContext);
 
-    console.log(scores);
-
     return (
         <div className="Scoreboard">
             <div className="Scoreboard-score">

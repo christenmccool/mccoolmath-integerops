@@ -16,6 +16,7 @@
 }
 
 .Problem-answer {
+    height: 280px;
     font-size: 60px;
     text-align: center;
 }
@@ -27,7 +28,7 @@
 }
 
 .Problem button {
-    display: block;
+    display: inline-block;
     margin: 10px auto;
     padding: 5px 10px;
     font-size: 30px;
@@ -63,7 +64,7 @@
     color: lightgrey;
 }
 
-.Problem-new-btn {
+.Problem-other-btn {
     background-color: white;
     border: 1px solid darkgrey;
     border-radius: 5px;
@@ -79,20 +80,21 @@
 
 
 .Problem-status {
-  min-height: 125px;
-  margin: 20px 0px 0px 0px;
+    /* display: flex; */
+    margin: 20px 0px 0px 0px;
 }
 
 .Problem-status h1 {
+    /* display: inline-block; */
     margin: 0px;
     padding: 0px;
     font-size: 50px;
-  }
+}
 
 .Problem-prev-attempts {
     min-height: 30px;
     padding: 0px;
-  }
+}
   
 .Problem-prev-attempts p {
     margin: 0px;
