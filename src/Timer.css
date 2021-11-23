@@ -17,18 +17,16 @@
     bottom: -50px;
     left: 30px;
     font-size: 40px;
-    /* color: #e8630a; */
     color: #4B0082;
-    /* color: #2c5d63; */
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     .Timer-fivesec {
         top: -50px;
         left: 50%;
         transform: translateX(-50%);
     }
-}
+} */
 
 .Timer-display {
     height: 50px;
@@ -47,7 +45,6 @@
 .Timer-start-btn, .Timer-reset-btn {
     cursor: pointer;
     display: inline-block;
-    /* background-color: darkgrey; */
     background-color: #91D34C;
     color: white;
     margin: 0px 2px;

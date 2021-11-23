@@ -33,8 +33,9 @@ const Problem = ({op}) => {
     const [fetchingCorrAnswer, setFetchingCorrAnswer] = useState(false);
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const [prevAttempts, setPrevAttempts] = useState([]);
-    const [ding, setDing] = useState(true);
-    const [fireworks, setFireworks] = useState(true);
+    const [ding, setDing] = useState(false);
+    const [confetti, setConfetti] = useState(true);
+    const [previewConfetti, setPreviewConfetti] = useState(false);
     const [isExploding, setIsExploding] = useState(false);
 
     // useRef is used to focus on buttons and answerField
@@ -51,7 +52,7 @@ const Problem = ({op}) => {
 
     // Disabled view for sound and effect toggle icons
     const iconVolclass = ding ? "Problem-icon" : "Problem-icon Problem-icon-off"
-    const iconStarclass = fireworks ? "Problem-icon" : "Problem-icon Problem-icon-off"
+    const iconStarclass = confetti ? "Problem-icon" : "Problem-icon Problem-icon-off"
 
     /** New problem is retrieved from McCool Math API 
      * Type of problem indicated by op: add, sub, mult, div
@@ -76,9 +77,8 @@ const Problem = ({op}) => {
         getData();
     }, [exp]);
 
-    /** User answer posts to McCool Math API 
-     * API response is status 'correct' or 'incorrect'
-    */
+    // User answer posts to McCool Math API 
+    // API response is status 'correct' or 'incorrect'
     useEffect(() => {
         if (!checkingAnswer) return;
         const postUserAnswer = async () => {
@@ -98,8 +98,7 @@ const Problem = ({op}) => {
         setCheckingAnswer(false);
     }, [checkingAnswer]);
 
-    /** Obtain correct answer to problem from McCool Math API 
-    */
+    // Obtain correct answer to problem from McCool Math API 
     useEffect(() => {
         if (!fetchingCorrAnswer) return;
         const fetchCorrAnswer = async () => {
@@ -136,7 +135,7 @@ const Problem = ({op}) => {
             newProbBtn.current.focus();
         }
         if (status === 'correct') {
-            if (fireworks) setIsExploding(true);
+            if (confetti) setIsExploding(true);
             if (ding) audioField.current.play();
 
             newScores[op]["correct"] = newScores[op]["correct"] + 1;
@@ -164,6 +163,7 @@ const Problem = ({op}) => {
     // Handle user request for correct answer
     // Triggers call to McCool Math API for correct answer
     const handleGetCorrAnswer = async () => {
+        setIsExploding(false);
         setFetchingCorrAnswer(true);
     }
 
@@ -193,19 +193,20 @@ const Problem = ({op}) => {
         }
     }
     
+    // Toggle ding audio
     const toggleDing = () => {
-        // if (!ding) {
-        //     audioField.current.play();
-        // }
         setIsExploding(false);
         setDing(!ding);
     }
 
-    const toggleFireworks = () => {
-        if (!fireworks) {
-            setIsExploding(true);
-        }
-        setFireworks(!fireworks);
+    // Toggle confetti effect
+    const toggleConfetti = () => {
+        // if (!confetti) {
+        //     setPreviewConfetti(true);
+        // } else {
+        //     setPreviewConfetti(false);
+        // }
+        setConfetti(!confetti);
     }
 
     // Renders list of previous user answers for the problem
@@ -223,6 +224,72 @@ const Problem = ({op}) => {
         }
         return null;
     }
+    
+    // Renders display of correct answer, incorrect answer, or correct answer from API 
+    // Conditioned on status 
+    const renderAnswerDisplay = () => {
+        const answerToDisplay = correctAnswer ? correctAnswer : answer;
+        const message = status==='correct' ? 
+                            <h1 className="Problem-heading-correct">Correct!</h1> : 
+                            <>
+                                <h1 className="Problem-heading-incorrect">Incorrect</h1>    
+                                <div className="Problem-prev-attempts">
+                                    {renderPrevAttempts()}
+                                </div>   
+                            </>;
+
+        return (
+            <div className="Problem-answer">
+                <StaticMathField>
+                    {answerToDisplay}
+                </StaticMathField>
+                {status ? 
+                    <div className="Problem-status">
+                        {confetti && isExploding && <ConfettiExplosion  />}   
+                        {message}        
+                    </div>
+                    : 
+                    null
+                }
+            </div> 
+        )
+    }
+
+    // Renders display of math input field
+    const renderUserInputField = () => {
+        return (
+            <form className="Problem-answer" onSubmit={handleSubmit} >
+                <div ref={answerField}>
+                    <EditableMathField
+                        latex={answer}
+                        onChange={(mathField) => setAnswer(mathField.latex())}
+                        onKeyDown={handleKeyDown}
+                        className="Problem-answer-field"
+                    />
+                </div>
+                <button className="Problem-check-btn" type="submit">Check</button>
+            </form> 
+        )
+    }
+
+    // Renders display of Try Again, Show Answer, Next buttons
+    // Conditioned on status and if a correct answer is displayed
+    const renderButtons = () => {
+        if (status==='correct' || correctAnswer!==null) {
+            return (
+                <div>
+                    <button className="Problem-other-btn" onClick={handleNewProblem} type="button" ref={newProbBtn}>Next</button>
+                </div>
+            )
+        } else if (status==='incorrect' || status===null) {
+            return (
+                <div>
+                    <button className="Problem-other-btn" type="button" onClick={handleGetCorrAnswer}>Show answer</button>
+                    {status ? <button className="Problem-other-btn" type="button" onClick={handleTryAgain} ref={tryAgainBtn}>Try again</button> : null}
+                </div>
+            )
+        } 
+    }
 
     return (
         <div className="Problem">
@@ -232,80 +299,24 @@ const Problem = ({op}) => {
                 </StaticMathField>
             </div>
             <audio ref={audioField} src={correctSound} type="audio/mp3" />
-            {/* {fireworks && isExploding && <ConfettiExplosion  />}    */}
-            {status && status==='correct' ?
-                <div className="Problem-answer">
-                    <StaticMathField>
-                        {answer}
-                    </StaticMathField>
-                    <div className="Problem-status">
-                        {fireworks && isExploding && <ConfettiExplosion  />}   
-                        <h1>Correct!</h1>        
-                    </div>
-                </div> : null}
-            {status && status==='incorrect' && correctAnswer===null ?
-                <div className="Problem-answer">
-                    <StaticMathField>
-                        {answer}
-                    </StaticMathField>
-                    <div className="Problem-status">
-                        <h1>Incorrect</h1>    
-                        <div className="Problem-prev-attempts">
-                            {renderPrevAttempts()}
-                        </div>           
-                    </div>
-                </div>: null}
+
             {!status && correctAnswer===null ? 
-                <form className="Problem-answer" onSubmit={handleSubmit} >
-                    <div ref={answerField}>
-                        <EditableMathField
-                            latex={answer}
-                            onChange={(mathField) => setAnswer(mathField.latex())}
-                            onKeyDown={handleKeyDown}
-                            className="Problem-answer-field"
-                        />
-                    </div>
-                    <button className="Problem-check-btn" type="submit">Check</button>
-                </form> : null
+                renderUserInputField() 
+                :
+                renderAnswerDisplay()
             }
 
-            {correctAnswer!==null ? 
-                <div className="Problem-answer">
-                    <StaticMathField>
-                        {correctAnswer}
-                    </StaticMathField>
-                    <div className="Problem-status">
-                        <div className="Problem-prev-attempts">
-                            {renderPrevAttempts()}
-                        </div>           
-                    </div>
-                </div> : null
-            }
-               
-            <div className="Problem-new-btn-div">
+            <div className="Problem-btn-div">
                 <div className="Problem-icons">
                     <div className={iconVolclass}>                    
                         <FontAwesomeIcon icon={faVolumeUp} onClick={toggleDing} />
                     </div>
                     <div className={iconStarclass}>                    
-                        <FontAwesomeIcon icon={faStar} onClick={toggleFireworks}/>
+                        <FontAwesomeIcon icon={faStar} onClick={toggleConfetti}/>
                     </div>
+                    {previewConfetti && <ConfettiExplosion  />}   
                 </div>
-                {status === 'correct' || correctAnswer!==null ?
-                    <div className="Problem-buttons">
-                         <button className="Problem-other-btn" onClick={handleNewProblem} type="button" ref={newProbBtn}>Next</button>
-                     </div>
-                    :
-                    status === 'incorrect'  ?
-                        <div className="Problem-buttons">
-                            <button className="Problem-other-btn" type="button" onClick={handleGetCorrAnswer}>Show answer</button>
-                            <button className="Problem-other-btn" type="button" onClick={handleTryAgain} ref={tryAgainBtn}>Try again</button>
-                        </div>
-                        :
-                        <div className="Problem-buttons">
-                            <button className="Problem-other-btn" type="button" onClick={handleGetCorrAnswer}>Show answer</button>
-                        </div>
-                }
+                {renderButtons()}
             </div>
         </div>
     )

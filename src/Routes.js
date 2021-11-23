@@ -13,7 +13,6 @@ const Routes = () => {
             </Route>
             <Route exact path="/integerop">
                 <ProblemPage op="mix" />
-                {/* <Problem /> */}
             </Route>
             <Route exact path="/integerop/add">
                 <ProblemPage op="add" />

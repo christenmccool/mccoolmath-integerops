@@ -3,26 +3,24 @@
     height: 80px;
     margin: 0px auto;
     padding: 0px;
-    border: 1px dotted grey;
-    /* border: 1px solid #e8630a; */
-    border-radius: 5px;
-    /* background-color: #F1F1F1; */
+    border: 1px solid darkgrey;
+    border-radius: 8px;
 }
 
 .Scoreboard p {
     font-size: 25px;
     margin: 6px;
-    color: #2c5d63;
+    color: #2B7C85;
 
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     .Scoreboard {
-        width: 80%;
+        width: 100%;
         height: auto;
         display: flex;
         justify-content: space-evenly;
-        /* background: none; */
+        gap: 20px;
         border: none;
     }
 }
@@ -33,5 +31,5 @@
         margin: 0px;
     }
 }
-
+ */
 

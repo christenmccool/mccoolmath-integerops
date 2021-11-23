@@ -46,12 +46,17 @@
     border-radius: 8px;
 }
 
-.Problem-new-btn-div {
+.Problem-btn-div {
     text-align: right;
     display: flex;
     justify-content: space-between;
 }
 
+.Problem-other-btn {
+    background-color: white;
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+}
 
 .Problem-icon {
     display: inline-block;
@@ -64,31 +69,29 @@
     color: lightgrey;
 }
 
-.Problem-other-btn {
-    background-color: white;
-    border: 1px solid darkgrey;
-    border-radius: 5px;
-}
-
-
-.Problem-check-btn:disabled {
-    font-weight: normal;
-    color: white;
-    background-color: lightgrey;
-    border: 3px solid white;
-}
-
-
 .Problem-status {
-    /* display: flex; */
     margin: 20px 0px 0px 0px;
 }
 
 .Problem-status h1 {
-    /* display: inline-block; */
     margin: 0px;
     padding: 0px;
     font-size: 50px;
+}
+
+.Problem-heading-correct {
+    color: #4B0082;
+    letter-spacing: 0.1em;
+}
+
+.Problem-heading-correct {
+    color: #4B0082;
+    letter-spacing: 0.05em;
+}
+
+.Problem-heading-incorrect {
+    color: #2B7C85;
+    letter-spacing: 0.05em;
 }
 
 .Problem-prev-attempts {
@@ -97,6 +100,7 @@
 }
   
 .Problem-prev-attempts p {
-    margin: 0px;
+    margin: 10px;
     font-size: 20px;
+    color: #2c5d63;
 }

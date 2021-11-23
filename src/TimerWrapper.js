@@ -4,34 +4,31 @@ import { faClock, faWindowClose, faEdit } from '@fortawesome/free-regular-svg-ic
 import Timer from './Timer';
 import EditTimer from './EditTimer';
 import './TimerWrapper.css';
-import Draggable from 'react-draggable';
 
-const TimerWrapper = () => {
-    const [showTimer, setShowTimer] = useState(false);
+const TimerWrapper = ({showTimer, setShowTimer, initialTime, setInitialTime, time, setTime, fiveSec, setFiveSec, runTimer, setRunTimer, fiveSecTime, setFiveSecTime}) => {
+
     const [editTimer, setEditTimer] = useState(false);
-    const [fiveSec, setFiveSec] = useState(true);
-
     const [timerType, setTimerType] = useState("count-up");
-    const [initialTime, setInitialTime] = useState(0);
 
-    const [time, setTime] = useState(0);
-    const [runTimer, setRunTimer] = useState(false);
+    const resetTimer = () => {
+        setRunTimer(false);
+        setTime(initialTime);
+        setFiveSecTime(5);
+    }
 
     const toggleShowTimer = () => {
         setShowTimer(state => !state);
-        setRunTimer(false);
+        resetTimer();
     }
 
     const toggleEditTimer = () => {
         setEditTimer(state => !state);
-        setTime(initialTime);
-        setRunTimer(false);
+        resetTimer();
     }
 
     return (
         <>
             {showTimer ? 
-                <Draggable>
                 <div className="TimerWrapper">
                     {editTimer ? 
                         <div>
@@ -54,9 +51,10 @@ const TimerWrapper = () => {
                                 time={time} 
                                 setTime={setTime}
                                 fiveSec={fiveSec}
+                                fiveSecTime={fiveSecTime}
+                                setFiveSecTime={setFiveSecTime}
                                 runTimer={runTimer}
                                 setRunTimer={setRunTimer}
-                                buttons={true} 
                             />
                             <div className="TimerWrapper-icons">
                                 <div className="TimerWrapper-icon">                    
@@ -69,7 +67,6 @@ const TimerWrapper = () => {
                         </div>
                     }
                 </div> 
-                </Draggable>
                 :
                 <div className="TimerWrapper-icon-large">
                     <FontAwesomeIcon icon={faClock}  onClick={toggleShowTimer}/>

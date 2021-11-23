@@ -1,0 +1,13 @@
+/* .FiveSecCount {
+    position: absolute;
+    bottom: 220px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+} */
+
+.FiveSecCount-text {
+    font-size: 80px;
+    color: #4B0082;
+}

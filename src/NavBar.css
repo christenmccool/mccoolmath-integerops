@@ -1,16 +1,12 @@
 .NavBar {
     display: flex;
     padding: 15px 10px;
-    /* background-color: #e8630a;
-    background-color: #A8E10C;
-    background-color: #0C1446; */
     background-color: #4B0082;
 }
 
 .NavBar-link {
     text-decoration: none;
     color: white;
-    font-size: 30px;    /* background-color: #175873; */
-
+    font-size: 30px;    
     font-weight: bold;
 }

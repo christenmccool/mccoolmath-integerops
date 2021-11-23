@@ -3,18 +3,27 @@
     position: relative;
 }
 
+.ProblemPage-countdown {
+    position: absolute;
+    top: 280px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;    
+}
+
 .ProblemPage-main {
     margin: 20px 0px;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     .ProblemPage-timer {
         position: absolute;
         bottom: 50px;
         left: 85%;
 
     }
-}
+} */
 
 .ProblemPage-info {
     width: 60%;
@@ -31,15 +40,15 @@
     width: 50%;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     .ProblemPage-statistics {
         width: 100%;
         margin: 20px;
     }
-}
+} */
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     .ProblemPage-main {
         margin: 20px 0px 0px 0px;
     }
-}
+} */

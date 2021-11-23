@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Timer.css';
 
-const Timer = ({timerType, initialTime, time, setTime, runTimer, setRunTimer, fiveSec, auto=false, buttons=true, border="1px solid black", color="black"}) => {
 
-    const [fiveSecTime, setFiveSecTime] = useState(5);
+const Timer = ({timerType, initialTime, time, setTime, runTimer, setRunTimer, fiveSec, fiveSecTime, setFiveSecTime, auto=false}) => {
+
     const [runFiveSec, setRunFiveSec] = useState(false); 
-
-    // const [runTimer, setRunTimer] = useState(false);
     
     useEffect(() => {
         if (auto) {
@@ -17,7 +15,6 @@ const Timer = ({timerType, initialTime, time, setTime, runTimer, setRunTimer, fi
     useEffect(() => {
         setTime(initialTime);
     }, [initialTime])
-
 
     useEffect(() => {
         let timerId;
@@ -44,7 +41,6 @@ const Timer = ({timerType, initialTime, time, setTime, runTimer, setRunTimer, fi
     useEffect(() => {
         if (fiveSec && !runFiveSec && !runTimer && fiveSecTime===0) {
             setRunTimer(true);
-            console.log("Go!")
         }
     }, [runFiveSec, fiveSecTime])
 
@@ -120,27 +116,6 @@ const Timer = ({timerType, initialTime, time, setTime, runTimer, setRunTimer, fi
         setFiveSecTime(5);
     }
 
-    const renderFiveSecTime = () => {
-        if (fiveSec && fiveSecTime) {
-            return (
-                <div className="Timer-fivesec">
-                    <div className="Timer-fivesec-text">
-                        {fiveSecTime}
-                    </div>
-                </div>  
-            )
-        } else if (fiveSec && fiveSecTime===0 && time===initialTime) {
-            return (
-                <div className="Timer-fivesec">
-                    <div className="Timer-fivesec-text">
-                        Go!
-                    </div>
-                </div>  
-            )
-        } 
-        return null;
-    }
-
     const renderStartBtn = () => {
         if (!fiveSec) {
             if (!runTimer && time===initialTime) {
@@ -156,19 +131,16 @@ const Timer = ({timerType, initialTime, time, setTime, runTimer, setRunTimer, fi
 
     return (
         <div className="Timer">
-            {renderFiveSecTime()}
-            <div className="Timer-main" style={{"border":border, "color":color}}>
+            <div className="Timer-main">
                 <div className="Timer-display">
                     <h1>{formatTime(time)}</h1>
                 </div>
-                {buttons ?
-                    <div className="Timer-buttons">
-                        <button className="Timer-start-btn" type="button" onClick={toggleRunTimer}>
-                            {renderStartBtn()}
-                        </button>
-                        <button className="Timer-reset-btn" type="button" onClick={resetTimer}>Reset</button>
-                    </div>
-                : null}
+                <div className="Timer-buttons">
+                    <button className="Timer-start-btn" type="button" onClick={toggleRunTimer}>
+                        {renderStartBtn()}
+                    </button>
+                    <button className="Timer-reset-btn" type="button" onClick={resetTimer}>Reset</button>
+                </div>
             </div>
         </div>
     )
